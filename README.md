@@ -125,7 +125,7 @@ will wait `10` seconds before sending the defined JSON response.
 
 To define a response for a given endpoint e.g. `/v1/messages`:
 ```
-curl --header "Content-Type: application/json" --request POST --data '{"endpoint": "/v1/messages","code": "200", "method": "POST", headers": {"Content-Type": "application/json"},"body": "{\"id\":\"Y2lzY29zcGFS0xMWUI1YmUz\",\"Email\":\"person@email.com\",\"text\":\"this is a test\",\"created\":\"2019-02-25T08:15:35.029Z\"}"}' 127.0.0.1:5555/canned/upload
+curl --header "Content-Type: application/json" --request POST --data '{"responses": [{"endpoint": "/v1/messages","code": "200", "method": "POST", "headers": {"Content-Type": "application/json"},"body": "{\"id\":\"Y2lzY29zcGFS0xMWUI1YmUz\",\"Email\":\"person@email.com\",\"text\":\"this is a test\",\"created\":\"2019-02-25T08:15:35.029Z\"}"}]}' 127.0.0.1:5555/canned/upload
 ```
 ## Load Responses from File
 To upload a file containing many responses:
