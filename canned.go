@@ -128,11 +128,22 @@ func storeResponses(b []byte) error {
 func getResponse(c *gin.Context, endpoint string) {
 	var r response
 	for _, v := range cachedResponses {
+		// check for direct endpoint and method match
 		if v.Endpoint == endpoint && v.Method == c.Request.Method {
-			r = v
+			// if a regex is present, e.g. required for /graphql endpoints, verify that this matches
+			if v.Regex != "" {
+				e := regexp.MustCompile(v.Regex).FindString(c.Request.RequestURI)
+				if e != "" {
+					r = v
+					break
+				} else {   // regex didnt match so move onto next response
+					break
+				}
+			}
+			// else if no regex then return this response
+		    r = v
 			break
-		}
-		if v.Regex != "" {
+		} else if v.Regex != "" {   // no direct match to check on regex match
 			e := regexp.MustCompile(v.Regex).FindString(endpoint)
 			if e != "" {
 				r = v
