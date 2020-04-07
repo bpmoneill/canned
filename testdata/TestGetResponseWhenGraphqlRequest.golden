@@ -1,0 +1,14 @@
+{
+  "responses": [
+    {
+      "endpoint": "/graphql",
+      "regex":"people",
+      "method": "POST",
+      "code": "200",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": "{\"user\":\"bob\"}"
+    }
+  ]
+}
