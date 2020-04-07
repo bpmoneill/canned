@@ -1,0 +1,14 @@
+{
+  "responses": [
+    {
+      "endpoint": "/",
+      "regex":"ReceiveMessage",
+      "method": "POST",
+      "code": "200",
+      "headers": {
+        "Content-Type": "application/xml"
+      },
+      "body": "<ReceiveMessageResponse><ReceiveMessageResult><Message><MessageId>5fea7756-0ea4-451a-a703-a558b933e274</MessageId><ReceiptHandle>MbZj6wDWli+JvwwJaBV+3dcjk2YW2vA3+STFFljTM8tJJg6HRG6PYSasuWXPJB+CwLj1FjgXUv1uSj1gUPAWV66FU/WeR4mq2OKpEGYWbnLmpRCJVAyeMjeU5ZBdtcQ+QEauMZc8ZRv37sIW2iJKq3M9MFx1YvV11A2x/KSbkJ0=</ReceiptHandle><MD5OfBody>bb9a4cb616f0899ea915898c1f834da4</MD5OfBody><Body>{\"strategy\":{\"type\":\"CLOUD\",\"actions\":[{\"type\":\"navigate\",\"config\":{\"url\":\"https://jsonformatter.curiousconcept.com\"}}],\"screenInfo\":{\"screendata\":{},\"screenID\":\"1\",\"viewport\":{\"width\":1500,\"height\":1000,\"scale\":1}},\"mediaLocation\":{\"type\":\"s3\",\"bucket\":\"secure-sites-media-production-eu-west-1\",\"key\":\"95cbaeaf-76e5-48e3-87ad-f52375f64661/b6bd18ae-1a6d-4299-a1f0-95bee0038a41/d0ba55ce-a869-490b-9475-e0efbda75d4f\"}}}</Body><Attribute><Name>SenderId</Name><Value>195004372649</Value></Attribute><Attribute><Name>SentTimestamp</Name><Value>1238099229000</Value></Attribute><Attribute><Name>ApproximateReceiveCount</Name><Value>5</Value></Attribute><Attribute><Name>ApproximateFirstReceiveTimestamp</Name><Value>1250700979248</Value></Attribute></Message></ReceiveMessageResult><ResponseMetadata><RequestId>b6633655-283d-45b4-aee4-4e84e0ae6afa</RequestId></ResponseMetadata></ReceiveMessageResponse>"
+    }
+  ]
+}

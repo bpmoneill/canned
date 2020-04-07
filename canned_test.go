@@ -3,8 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/gin-gonic/gin"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"io/ioutil"
 	"mime/multipart"
@@ -12,8 +10,12 @@ import (
 	"net/http/httptest"
 	"path/filepath"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
 )
 
 const resUpload = "/canned/upload"
@@ -245,5 +247,33 @@ func TestGetResponseWhenTimeoutSpecifiedWillWaitBeforeResponding(t *testing.T) {
 	commonTestGetResponse(t, "/dummy/ep1", "")
 	if !timedOut {
 		t.Fail()
+	}
+}
+
+func TestGetResponseWhenRegexAppliedToRequestBody(t *testing.T) {
+	rec := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(rec)
+	fileData := readGoldenFile(t)
+	var err error
+	bytes := bytes.NewBuffer(fileData)
+	c.Request, err = http.NewRequest("POST", resUpload, bytes)
+	if err != nil {
+		t.Fatal("failed to create test request")
+	}
+	var p gin.Params
+	p = append(p, gin.Param{Key: "endpoint", Value: resUpload})
+	c.Params = p
+	endpointRouter(c)
+
+	var q gin.Params
+	q = append(q, gin.Param{Key: "endpoint", Value: "/"})
+	c.Params = q
+
+	c.Request.Body = ioutil.NopCloser(strings.NewReader("Action=ReceiveMessage&MaxNumberOfMessages=5&VisibilityTimeout=15&AttributeName=All&Expires=2020-04-18T22%3A52%3A43PST&Version=2012-11-05&AUTHPARAMS"))
+
+	endpointRouter(c)
+
+	if rec.Code != http.StatusOK {
+		t.Fatalf("expected %v but received %v", http.StatusOK, rec.Code)
 	}
 }

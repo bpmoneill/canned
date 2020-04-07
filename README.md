@@ -5,9 +5,11 @@ endpoint. `canned` will listen on the specified port for all HTTP methods [GET, 
 DELETE, CONNECT, TRACE], and if a response is found for a given request endpoint, it will be returned.  Additional
 features include:
 
-* Regex endpoint match - optionally define a regex pattern to match a collection of endpoints.  Where a regex is defined
-this will take precedence over the defined endpoint.
-* Regex query string match - define a regex pattern to match a given GraphQL query or mutation.
+* Regex match (in order or precedence):
+    * Query string match - define a regex pattern to match a given GraphQL query or mutation.
+    * Request body match - define a regex pattern to match a given request body.
+    * Endpoint match - optionally define a regex pattern to match a collection of endpoints.
+* Endpoint match - where the exact endpoint is known it can be used as an explicit match without a regex.
 * Timeout - optionally define a time in seconds to wait before the response is sent.
 
 Responses can be preloaded from file on application start or uploaded via the following endpoints:
@@ -113,6 +115,16 @@ $ canned -port=:5555 -responses=responses.json
       },
       "body": "{\"people\": {\"name\": \"Bob Lee Swagger\"}}"
     },
+    {
+      "endpoint": "/",
+      "regex":"ReceiveMessage",
+      "method": "POST",
+      "code": "200",
+      "headers": {
+        "Content-Type": "application/xml"
+      },
+      "body": "<ReceiveMessageResponse><ReceiveMessageResult><Message><MessageId>5fea7756-0ea4-451a-a703-a558b933e274</MessageId><ReceiptHandle>MbZj6wDWli+JvwwJaBV+3dcjk2YW2vA3+...</ReceiptHandle><MD5OfBody>bb9a4cb616f0899ea915898c1f834da4</MD5OfBody><Body>{\"people\": {\"name\": \"Bob Lee Swagger\"}}</Body><Attribute><Name>SenderId</Name><Value>195004372649</Value></Attribute><Attribute><Name>SentTimestamp</Name><Value>1238099229000</Value></Attribute><Attribute><Name>ApproximateReceiveCount</Name><Value>5</Value></Attribute><Attribute><Name>ApproximateFirstReceiveTimestamp</Name><Value>1250700979248</Value></Attribute></Message></ReceiveMessageResult><ResponseMetadata><RequestId>b6633655-283d-45b4-aee4-4e84e0ae6afa</RequestId></ResponseMetadata></ReceiveMessageResponse>"
+    }
   ]
 }
 ```
@@ -134,7 +146,10 @@ will wait `10` seconds before sending the defined JSON response.
 
 6. This example shows how a GraphQL request can be mocked out. Unlike the previous examples the supplied regex is applied
 to the URI query string and not the endpoint.  All graphql requests should target the `/graphql` endpoint and then use the
-regex to filter the specific request. 
+regex to filter the specific request.
+
+7. This shows how a regex can be applied to the body of a request.  This is an example of how to match on an AWS SQS
+ReceiveMessage request where the endpoint cannot be used to distinguish it from say a GetQueueURL request.
 
 ## Load a Response
 
